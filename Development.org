@@ -1,0 +1,36 @@
+* Ansible Mode Configuration
+#+begin_src emacs-lisp :tangle ~/.emacs.d/user_lisp/ansible-mode-config.el :mkdirp t
+  (use-package ansible
+    :preface
+    (defun maybe-enable-ansible+ ()
+      (let ((buffer-or-directory-name (or buffer-file-name default-directory)))
+	(when (and (locate-dominating-file buffer-or-directory-name "ansible.cfg")
+		   (not (string-match "inventory\\.ya?ml$" buffer-or-directory-name)))
+	  (ansible t))))
+    :hook (yaml-mode . maybe-enable-ansible+))
+
+#+end_src
+
+* LSP Mode Configuration
+:LOGBOOK:
+CLOCK: [2022-04-19 Tue 04:13]
+:END:
+** Basic Configuration
+#+begin_src emacs-lisp :tangle ~/.emacs.d/user_lisp/lsp-mode-config.el
+  (use-package lsp-mode
+    :init
+    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", or "C-c l")
+    (setq lsp-keymap-prefix "C-c o")
+    (setq lsp-use-plists t)
+    :hook (
+	   (python-mode . lsp-deferred)
+	   (ansible-mode . lsp-deferred)
+	   (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp-deferred )
+  (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+  (use-package which-key
+    :config
+    (which-key-mode))
+
+#+end_src
