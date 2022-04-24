@@ -1,0 +1,104 @@
+* MBSYNC
+
+** Configure the sync
+#+begin_src conf :tangle ~/.mbsyncrc
+   IMAPAccount exchange
+   Host ballard.amazon.com
+   Port 1993
+   User davdunc
+   PassCmd "cat ~/.local/password-mail"
+   SSLType IMAPS
+   CertificateFile ~/Maildirs/root-certificates.pem
+   PipelineDepth 1
+
+#+end_src
+#+begin_src conf :tangle ~/.mbsyncrc
+   IMAPStore exchange-remote
+   Account exchange
+
+#+end_src
+#+begin_src conf :tangle ~/.mbsyncrc
+   MaildirStore exchange-local
+   Path ~/Maildirs/Amazon
+   Inbox ~/Maildirs/Amazon/INBOX
+   SubFolders Verbatim
+
+#+end_src
+#+begin_src conf :tangle ~/.mbsyncrc
+   Channel exchange
+   Far :exchange-remote:
+   Near :exchange-local:
+   Patterns INBOX* %!Calendar Sent% Outbox Partners Tasks% Archives* Deleted* !*.sbd !Partners
+   Create Near
+   Expunge Both
+   Sync All
+   SyncState *
+
+#+end_src
+
+* Mu4e
+I am using Mu4e at work. The first configuration will be for my work config and I do not expect it to be helpful for anyone besides me.
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/user_lisp/messaging.el :mkdirp t
+  (if (eq 'darwin system-type)
+      (add-to-list 'load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e")
+      )
+  (use-package mu4e
+    :ensure nil
+    :defer 20
+    :load-path "/opt/homebrew/share/emacs/site-lisp/mu/mu4e"
+    :config
+    (require 'org-mu4e)
+
+    (setq mu4e-update-interval (* 10 60))
+    (setq mu4e-get-mail-command "mbsync -a")
+    (setq mu4e-maildir "~/Maildirs")
+    (setq mu4e-completing-read-function #'ivy-completing-read)
+    (setq mu4e-change-filenames-when-moving t)
+
+    (setq mu4e-contexts
+	  `(,(make-mu4e-context
+	      :name "Amazon"
+	      :match-func (lambda (msg) (when msg
+					  (string-prefix-p "/Amazon" (mu4e-message-field msg :maildir))))
+	      :vars '(
+		      (user-full-name . "David Duncan")
+		      (user-mail-address . "davdunc@amazon.com")
+		      (mu4e-sent-folder . "/Amazon/Sent Items")
+		      (mu4e-trash-folder . "/Amazon/Trash")
+		      (mu4e-drafts-folder . "/Amazon/Drafts")
+		      (mu4e-refile-folder . "/Amazon/Archive")
+		      (mu4e-sent-messages-behavior . sent)
+		      ))
+	    ,(make-mu4e-context
+	      :name "Personal"
+	      :match-func (lambda (msg) (when msg
+					  (string-prefix-p "/Personal" (mu4e-message-field msg :maildir))))
+	      :vars '(
+		      (user-full-name . "David Duncan")
+		      (user-mail-address . "davdunc@gmail.com")
+		      (mu4e-sent-folder . "/Personal/Sent")
+		      (mu4e-trash-folder . "/Personal/Deleted")
+		      (mu4e-refile-folder . "/Personal/Archive")))))
+
+    (setq mu4e-context-policy 'pick-first)
+    ;; Display options
+    (setq mu4e-view-show-images t)
+    (setq mu4e-view-show-addresses 't)
+
+
+    ;; Composing mail
+    (setq mu4e-compose-dont-reply-to-self t)
+    ;; Use mu4e for sending e-mail
+    (setq mail-user-agent 'mu4e-user-agent
+	  message-send-mail-function 'smtpmail-send-it
+	  smtpmail-smtp-server "ballard.amazon.com"
+	  smtpmail-smtp-service 1587
+	  smtpmail-local-domain "amazon.com"
+	  smtpmail-stream-type 'ssl)
+
+    ;; Use mml-secure-sign-pgpmime
+    (setq mml-secure-openpgp-signers '("3760CF72691F31E2DCE9F260AC72DA7B40B20EFF"))
+    )
+
+#+end_src

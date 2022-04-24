@@ -12,10 +12,11 @@
 #+end_src
 
 * LSP Mode Configuration
-:LOGBOOK:
-CLOCK: [2022-04-19 Tue 04:13]
-:END:
 ** Basic Configuration
+:LOGBOOK:
+CLOCK: [2022-04-19 Tue 17:57]--[2022-04-19 Tue 18:57] =>  1:00
+#+BEGIN: clocktable :scope subtree :maxlevel 2
+:END:
 #+begin_src emacs-lisp :tangle ~/.emacs.d/user_lisp/lsp-mode-config.el
   (use-package lsp-mode
     :init

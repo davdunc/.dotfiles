@@ -1,5 +1,5 @@
 #+STARTUP:
-* Files for configuring my working environment
+* Files for configuring my working environment in Emacs
 
 Currently running GNU Emacs 28.1 on MacOS and 27.2 on Fedora 35
 
@@ -9,3 +9,4 @@ I am using a number of other open users' configurations for help building my own
   - Mike Zamansky
 
 and many others around the Internet whom I will add to the list as I am working on the details.
+* Files, tips, and tricks
