@@ -18,21 +18,22 @@
 
 #+end_src
 #+begin_src conf :tangle ~/.mbsyncrc
-   MaildirStore exchange-local
-   Path ~/Maildirs/Amazon
-   Inbox ~/Maildirs/Amazon/INBOX
-   SubFolders Verbatim
+  MaildirStore exchange-local
+  Path ~/Maildirs/Amazon
+  Inbox ~/Maildirs/Amazon/INBOX
+  SubFolders Verbatim
+  Flatten .
 
 #+end_src
 #+begin_src conf :tangle ~/.mbsyncrc
-   Channel exchange
-   Far :exchange-remote:
-   Near :exchange-local:
-   Patterns INBOX* %!Calendar Sent% Outbox Partners Tasks% Archives* Deleted* !*.sbd !Partners
-   Create Near
-   Expunge Both
-   Sync All
-   SyncState *
+  Channel exchange
+  Far :exchange-remote:
+  Near :exchange-local:
+  Patterns INBOX* %!Calendar Sent% Outbox Partners Tasks% Archives* Deleted* !*.sbd !Partners
+  Create Near
+  Expunge Both
+  Sync All
+  SyncState *
 
 #+end_src
 
