@@ -101,5 +101,6 @@ I am using Mu4e at work. The first configuration will be for my work config and 
     ;; Use mml-secure-sign-pgpmime
     (setq mml-secure-openpgp-signers '("3760CF72691F31E2DCE9F260AC72DA7B40B20EFF"))
     )
-
+  (use-package gnutls
+    :ensure t)
 #+end_src
