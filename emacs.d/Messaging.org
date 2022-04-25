@@ -19,7 +19,7 @@
 #+end_src
 #+begin_src conf :tangle ~/.mbsyncrc
   MaildirStore exchange-local
-  Path ~/Maildirs/Amazon
+  Path ~/Maildirs/Amazon/
   Inbox ~/Maildirs/Amazon/INBOX
   SubFolders Verbatim
   Flatten .
