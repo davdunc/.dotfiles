@@ -29,7 +29,7 @@
   Channel exchange
   Far :exchange-remote:
   Near :exchange-local:
-  Patterns INBOX* %!Calendar Sent% Outbox Partners Tasks% Archives* Deleted* !*.sbd !Partners
+  Patterns INBOX INBOX* %!Calendar Sent% Outbox Partners Tasks% Archives* Deleted* !*.sbd !Partners
   Create Near
   Expunge Both
   Sync All
