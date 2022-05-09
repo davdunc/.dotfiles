@@ -5,7 +5,7 @@
 
   ;;; For performance
   (setq gc-cons-threshold 100000000)
-  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+  (setq read-process-output-max (* 1024 1024)) ;; 1sp requirement
 
 
   (add-hook 'after-init-hook #'(lambda ()
