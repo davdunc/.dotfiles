@@ -12,3 +12,53 @@
 				 ;; restore after startup
 				 (setq gc-cons-threshold 800000)))
 #+end_src
+* Starting configuration
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+  ;; -*- lexical-binding: t; -*-
+  (add-to-list 'load-path "~/.emacs.d/user_lisp")
+  (load (user-login-name))
+  (load "personal")
+  (load "messaging")
+  (load "lsp-mode-config")
+  (load "ansible-mode-config")
+  (load "~/.emacs.d/sanemacs.el" nil t)
+  (use-package auto-package-update
+    :custom
+    (auto-package-update-interval 7)
+    (auto-package-update-prompt-before-update t)
+    (auto-package-update-hide-results t)
+    :config
+    (auto-package-update-maybe)
+    (auto-package-update-at-time "09:00"))
+
+  (display-time-mode t)
+  (put 'downcase-region 'disabled nil)
+
+#+end_src
+* Fixing keyboard issues for various OS requirements
+#+begin_src emacs-lisp :tangle ~/.emacs.d/init.el
+	    ;; check OS type
+	    (cond
+	     ((string-equal system-type "windows-nt") ; Microsoft Windows
+	      (progn
+		(message "Microsoft Windows")))
+	     ((string-equal system-type "darwin") ; Mac OS X
+	      (progn
+		(setq mac-option-key-is-meta nil)
+		(setq mac-command-key-is-meta t)
+		(setq mac-command-modifier 'meta)
+		(setq mac-option-modifier nil)
+		(message "Mac OS X")
+		(defun g915 ()
+		  (interactive)
+		  (progn
+		    (setq mac-option-key-is-meta t)
+		    (setq mac-command-key-is-meta nil)
+		    (setq mac-command-modifier nil)
+		    (setq mac-option-modifier nil)
+		    )
+		  )))
+	     ((string-equal system-type "gnu/linux") ; linux
+	      (progn
+		(message "Linux"))))
+#+end_src
