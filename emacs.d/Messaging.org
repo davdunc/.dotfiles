@@ -1,15 +1,77 @@
 * MBSYNC
-
-** Configure the sync
+** Configure the sycn for davdunc@gmail.com
 #+begin_src conf :tangle ~/.mbsyncrc
-   IMAPAccount exchange
-   Host ballard.amazon.com
-   Port 1993
-   User davdunc
-   PassCmd "cat ~/.local/password-mail"
-   SSLType IMAPS
-   CertificateFile ~/Maildirs/root-certificates.pem
-   PipelineDepth 1
+  IMAPAccount gmail
+  Host imap.gmail.com
+  User davdunc@gmail.com
+  PassCmd "security find-generic-password -s mu4e-personal -a davdunc -w"
+  Port 993
+  SSLType IMAPS
+  SSLVersions TLSv1.2
+  AuthMechs PLAIN
+  SystemCertificates no
+  CertificateFile ~/Maildirs/root-certificates.pem
+
+  IMAPStore gmail-remote
+  Account gmail
+
+  MaildirStore gmail-local
+  SubFolders Verbatim
+  Path ~/Maildirs/Personal/
+  Inbox ~/Maildirs/Personal/INBOX
+
+  Channel gmail
+  Far :gmail-remote:
+  Near :gmail-local:
+  Patterns * !"[Gmail]/All Mail" !"[Gmail]/Important" !"[Gmail]/Starred" !"[Gmail]/Bin"
+  Create Near
+  Sync All
+  Expunge Both
+  SyncState *
+
+#+end_src
+
+** Configure the sync for internethamster
+#+begin_src conf :tangle ~/.mbsyncrc
+  IMAPAccount internethamster
+  Host imap.gmail.com
+  User the@internethamster.com
+  PassCmd "security find-generic-password -s mu4e-hamster -a davdunc -w"
+  Port 993
+  SSLType IMAPS
+  SSLVersions TLSv1.2
+  AuthMechs PLAIN
+  SystemCertificates no
+  CertificateFile ~/Maildirs/root-certificates.pem
+
+  IMAPStore internethamster-remote
+  Account internethamster
+
+  MaildirStore internethamster-local
+  SubFolders Verbatim
+  Path ~/Maildirs/Hamster/
+  Inbox ~/Maildirs/Hamster/INBOX
+
+  Channel internethamster
+  Far :internethamster-remote:
+  Near :internethamster-local:
+  Patterns * !"[Gmail]/All Mail" !"[Gmail]/Important" !"[Gmail]/Starred" !"[Gmail]/Bin"
+  Create Near
+  Sync All
+  Expunge Both
+  SyncState *
+
+#+end_src
+** Configure the sync for $dayjob
+#+begin_src conf :tangle ~/.mbsyncrc
+  IMAPAccount exchange
+  Host ballard.amazon.com
+  Port 1993
+  User davdunc
+  PassCmd "security find-generic-password -s mu4e-exchange -a davdunc -w"
+  SSLType IMAPS
+  CertificateFile ~/Maildirs/root-certificates.pem
+  PipelineDepth 1
 
 #+end_src
 #+begin_src conf :tangle ~/.mbsyncrc
@@ -71,6 +133,119 @@ I am using Mu4e at work. The first configuration will be for my work config and 
 	  mu4e-use-fancy-chars t
 	  mu4e-headers-auto-update t)
 
+    (setq mu4e-context
+	  `(,(make-mu4e-context
+	      :name "Amazon"
+	      :match-func (lambda (msg) (when msg
+					  (string-prefix-p "/Amazon" (mu4e-message-field msg :maildir))))
+	      :leave-func (lambda () (mu4e-message "Leaving Company Message"))
+	      :vars '(
+		      (user-full-name . "David Duncan")
+		      (user-mail-address . "davdunc@amazon.com")
+		      (smtpmail-smtp-server . "ballard.amazon.com")
+		      (smtpmail-smtp-service . 1587)
+		      (smtpmail-local-domain . "amazon.com")
+		      (smtpmail-stream-type . 'starttls)
+		      (smtpmail-queue-dir . "~/Maildirs/exchange/queue/cur")
+		      (smtpmail-smtp-user . "davdunc@amazon.com")
 
-  )
+		      (mu4e-sent-folder . "/Amazon/Sent Items")
+		      (mu4e-trash-folder . "/Amazon/Trash")
+		      (mu4e-drafts-folder . "/Amazon/Drafts")
+		      (mu4e-refile-folder . "/Amazon/Archive")
+
+		      (mu4e-sent-messages-behavior . sent)
+
+		      (mu4e-maildir-shortcuts . (
+						 (:maildir "/Amazon/INBOX"              :key ?i)
+						 (:maildir "/Amazon/INBOX.OS-Partners-Tickets" :key ?t)
+						 (:maildir "/Amazon/INBOX "  :key ?d)
+						 (:maildir "/Amazon/Trash"      :key ?t)
+						 (:maildir "/Amazon/INBOX"   :key ?a)))
+		      ;; ( mu4e-compose-signature  .
+		      ;;   (concat
+		      ;;    "Prof. Alice Derleth\n"
+		      ;;    "Miskatonic University, Dept. of Occult Sciences\n"))
+		      ))
+	    ,(make-mu4e-context
+	      :name "Personal"
+	      :match-func (lambda (msg) (when msg
+					  (string-prefix-p "/Personal" (mu4e-message-field msg :maildir))))
+	      :leave-func (lambda () (mu4e-message "Leaving Personal Message"))
+	      :vars '(
+		      (user-full-name . "David Duncan")
+		      (user-mail-address . "davdunc@gmail.com")
+		      (mu4e-sent-folder . "/Personal/Sent")
+		      (mu4e-drafts-folder . "/Personal/Drafts")
+		      (mu4e-trash-folder . "/Personal/Deleted")
+		      (mu4e-refile-folder . "/Personal/Archive")
+		      (smtpmail-mail-address . "davdunc@gmail.com")
+		      (smtpmail-smtp-server . "smtp.gmail.com")
+		      (smtpmail-starttls-credentials . (("smtp.gmail.com" 587 nil nil)))
+		      (smtpmail-auth-credentials . (expand-file-name "~/.authinfo.gpg"))
+		      (smtpmail-smtp-service . 587)
+		      (smtpmail-local-domain . "gmail.com")
+		      (smtpmail-stream-type . 'starttls)
+		      (smtpmail-queue-dir . "~/Maildirs/gmail/queue/cur")
+		      (smtpmail-smtp-user . "davdunc@gmail.com")
+		      (mu4e-maildir-shortcuts . (
+						 (:maildir "/Personal/INBOX"              :key ?i)
+						 (:maildir "/Personal/INBOXfa" :key ?t)
+						 (:maildir "/Personal/INBOX "  :key ?d)
+						 (:maildir "/Personal/Deleted"      :key ?t)
+						 (:maildir "/Personal/Receipts"   :key ?a)))
+	      ;; ( mu4e-compose-signature  .
+		      ;;   (concat
+		      ;;    "Prof. Alice Derleth\n"
+		      ;;    "Miskatonic University, Dept. of Occult Sciences\n"))
+		      ))
+	    ,(make-mu4e-context
+	      :name "Hamster"
+	      :match-func (lambda (msg) (when msg
+					  (string-prefix-p "/Hamster" (mu4e-message-field msg :maildir))))
+	      :leave-func (lambda () (mu4e-message () "Leaving the Hamster mail space"))
+	      :vars '(
+				      (user-full-name . "David Duncan")
+		      (user-mail-address .  "the@internethamster.com")
+		      (smtpmail-smtp-user . "the@internethamster.com")
+		      (smtpmail-mail-address . "the@internethamster.com")
+		      (mu4e-sent-folder . "/Hamster/Sent")
+		      (mu4e-trash-folder . "/Hamster/Deleted")
+		      (mu4e-refile-folder . "/Hamster/Archive")
+		      (smtpmail-mail-address . "the@internethamster.com")
+		      (smtpmail-smtp-server . "smtp.gmail.com")
+		      (smtpmail-starttls-credentials . (("smtp.gmail.com" 587 nil nil)))
+		      (smtpmail-auth-credentials . (expand-file-name "~/.authinfo.gpg"))
+		      (smtpmail-smtp-service . 587)
+		      (smtpmail-local-domain . "gmail.com")
+		      (smtpmail-stream-type . 'starttls)
+		      (smtpmail-queue-dir . "~/Maildirs/gmail/queue/cur")
+		      (mu4e-maildir-shortcuts . (
+						 (:maildir "/Hamster/INBOX"              :key ?i)
+						 (:maildir "/Hamster/INBOX" :key ?t)
+						 (:maildir "/Hamster/INBOX "  :key ?d)
+						 (:maildir "/Hamster/Deleted"      :key ?t)
+						 (:maildir "/Hamster/Receipts"   :key ?a)))
+		      ;; ( mu4e-compose-signature  .
+		      ;;   (concat
+		      ;;    "Prof. Alice Derleth\n"
+		      ;;    "Miskatonic University, Dept. of Occult Sciences\n"))
+
+		      ))
+	    ))
+
+    (setq mu4e-context-policy 'pick-first)
+    ;; Display options
+    (setq mu4e-view-show-images t)
+    (setq mu4e-view-show-addresses 't)
+
+
+    ;; Composing mail
+    (setq mu4e-compose-dont-reply-to-self nil)
+    ;; Use mu4e for sending e-mail
+    (setq mail-user-agent 'mu4e-user-agent
+	  message-send-mail-function 'smtpmail-send-it)
+
+    ;; Use mml-secure-sign-pgpmime
+    (setq mml-secure-openpgp-signers '("3760CF72691F31E2DCE9F260AC72DA7B40B20EFF")))
 #+end_src
