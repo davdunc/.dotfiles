@@ -21,6 +21,7 @@
   (load "messaging")
   (load "lsp-mode-config")
   (load "ansible-mode-config")
+  (load "encryption_configuration")
   (load "~/.emacs.d/sanemacs.el" nil t)
   (use-package auto-package-update
     :custom
