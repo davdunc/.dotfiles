@@ -1,7 +1,7 @@
 * Initialization
 ** The early-init.el
 #+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el :results code
-  -*- lexical-binding: t; -*-
+;;  -*- lexical-binding: t; -*-
 
   ;;; For performance
   (setq gc-cons-threshold 100000000)
