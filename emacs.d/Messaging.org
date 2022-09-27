@@ -81,8 +81,8 @@
 #+end_src
 #+begin_src conf :tangle no
   MaildirStore exchange-local
-  Path ~/Maildirs/Amazon/
-  Inbox ~/Maildirs/Amazon/INBOX
+  Path ~/Maildirs/WorkMaildir/
+  Inbox ~/Maildirs/WorkMaildir/INBOX
   SubFolders Verbatim
   Flatten .
 
@@ -135,9 +135,9 @@ I am using Mu4e at work. The first configuration will be for my work config and 
 
     (setq mu4e-context
 	  `(,(make-mu4e-context
-	      :name "Amazon"
+	      :name "WorkMaildir"
 	      :match-func (lambda (msg) (when msg
-					  (string-prefix-p "/Amazon" (mu4e-message-field msg :maildir))))
+					  (string-prefix-p "/WorkMaildir" (mu4e-message-field msg :maildir))))
 	      :leave-func (lambda () (mu4e-message "Leaving Company Message"))
 	      :vars '(
 		      (user-full-name . "David Duncan")
@@ -149,19 +149,19 @@ I am using Mu4e at work. The first configuration will be for my work config and 
 		      (smtpmail-queue-dir . "~/Maildirs/exchange/queue/cur")
 		      (smtpmail-smtp-user . "davdunc@amazon.com")
 
-		      (mu4e-sent-folder . "/Amazon/Sent Items")
-		      (mu4e-trash-folder . "/Amazon/Trash")
-		      (mu4e-drafts-folder . "/Amazon/Drafts")
-		      (mu4e-refile-folder . "/Amazon/Archive")
+		      (mu4e-sent-folder . "/WorkMaildir/Sent Items")
+		      (mu4e-trash-folder . "/WorkMaildir/Trash")
+		      (mu4e-drafts-folder . "/WorkMaildir/Drafts")
+		      (mu4e-refile-folder . "/WorkMaildir/Archive")
 
 		      (mu4e-sent-messages-behavior . sent)
 
 		      (mu4e-maildir-shortcuts . (
-						 (:maildir "/Amazon/INBOX"              :key ?i)
-						 (:maildir "/Amazon/INBOX.OS-Partners-Tickets" :key ?t)
-						 (:maildir "/Amazon/INBOX "  :key ?d)
-						 (:maildir "/Amazon/Trash"      :key ?t)
-						 (:maildir "/Amazon/INBOX"   :key ?a)))
+						 (:maildir "/WorkMaildir/INBOX"              :key ?i)
+						 (:maildir "/WorkMaildir/INBOX.OS-Partners-Tickets" :key ?t)
+						 (:maildir "/WorkMaildir/INBOX "  :key ?d)
+						 (:maildir "/WorkMaildir/Trash"      :key ?t)
+						 (:maildir "/WorkMaildir/INBOX"   :key ?a)))
 		      ;; ( mu4e-compose-signature  .
 		      ;;   (concat
 		      ;;    "Prof. Alice Derleth\n"
