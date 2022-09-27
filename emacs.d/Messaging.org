@@ -1,6 +1,6 @@
 * MBSYNC
-** Configure the sycn for davdunc@gmail.com
-#+begin_src conf :tangle ~/.mbsyncrc
+** Configure the sync for davdunc@gmail.com
+ #+begin_src conf :tangle ~/.mbsyncrc
   IMAPAccount gmail
   Host imap.gmail.com
   User davdunc@gmail.com
@@ -63,7 +63,7 @@
 
 #+end_src
 ** Configure the sync for $dayjob
-#+begin_src conf :tangle ~/.mbsyncrc
+#+begin_src conf :tangle no
   IMAPAccount exchange
   Host ballard.amazon.com
   Port 1993
@@ -79,7 +79,7 @@
    Account exchange
 
 #+end_src
-#+begin_src conf :tangle ~/.mbsyncrc
+#+begin_src conf :tangle no
   MaildirStore exchange-local
   Path ~/Maildirs/Amazon/
   Inbox ~/Maildirs/Amazon/INBOX
@@ -87,7 +87,7 @@
   Flatten .
 
 #+end_src
-#+begin_src conf :tangle ~/.mbsyncrc
+#+begin_src conf :tangle no
   Channel exchange
   Far :exchange-remote:
   Near :exchange-local:
@@ -120,7 +120,7 @@ I am using Mu4e at work. The first configuration will be for my work config and 
     (require 'smtpmail)
 
     (setq mu4e-update-interval (* 120 60)
-	  mu4e-get-mail-command "mbsync exchange gmail"
+	  mu4e-get-mail-command "mbsync -a -X"
 	  mu4e-maildir "~/Maildirs"
 	  mu4e-completing-read-function #'ivy-completing-read
 	  mu4e-change-filenames-when-moving t

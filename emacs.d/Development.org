@@ -4,10 +4,17 @@
     :preface
     (defun maybe-enable-ansible+ ()
       (let ((buffer-or-directory-name (or buffer-file-name default-directory)))
-	(when (and (locate-dominating-file buffer-or-directory-name "ansible.cfg")
-		   (not (string-match "inventory\\.ya?ml$" buffer-or-directory-name)))
-	  (ansible t))))
+        (when (and (locate-dominating-file buffer-or-directory-name "ansible.cfg")
+                   (not (string-match "inventory\\.ya?ml$" buffer-or-directory-name)))
+          (ansible t))))
     :hook (yaml-mode . maybe-enable-ansible+))
+  (use-package ansible-vault
+    :config
+    (setq ansible-vault-password-file "~/.aws/vault.pass")
+    :init
+    (add-hook 'ansible-hook 'ansible-auto-decrypt-encrypt))
+
+
 
 #+end_src
 
@@ -23,15 +30,28 @@ CLOCK: [2022-04-19 Tue 17:57]--[2022-04-19 Tue 18:57] =>  1:00
     ;; set prefix for lsp-command-keymap (few alternatives - "C-l", or "C-c l")
     (setq lsp-keymap-prefix "C-c o")
     (setq lsp-use-plists t)
-    :hook (
-	   (python-mode . lsp-deferred)
-	   (ansible-mode . lsp-deferred)
-	   (lsp-mode . lsp-enable-which-key-integration))
+    :hook ((python-mode . lsp-deferred)
+           (ansible-mode . lsp-deferred)
+           (shell-script-mode . lsp-deferred)
+           (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp-deferred )
   (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
   (use-package which-key
     :config
     (which-key-mode))
+#+end_src
+* Line Numbers
 
+#+begin_src emacs-lisp :tangle ~/.emacs.d/user_lisp/linum-mode-config.el
+  (defun goto-line-with-feedback ()
+    "Show line numbers temporarily, while prompting for the line number input"
+    (interactive)
+    (unwind-protect
+        (progn
+          (linum-mode 1)
+          (goto-line (read-number "Goto line: ")))
+      (linum-mode -1)))
+
+  (global-set-key [remap goto-line] 'goto-line-with-feedback)
 #+end_src
