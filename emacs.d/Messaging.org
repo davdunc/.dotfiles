@@ -4,7 +4,7 @@
   IMAPAccount gmail
   Host imap.gmail.com
   User davdunc@gmail.com
-  PassCmd "security find-generic-password -s mu4e-personal -a davdunc -w"
+  PassCmd "**FIXME**"
   Port 993
   SSLType IMAPS
   SSLVersions TLSv1.2
@@ -36,7 +36,7 @@
   IMAPAccount internethamster
   Host imap.gmail.com
   User the@internethamster.com
-  PassCmd "security find-generic-password -s mu4e-hamster -a davdunc -w"
+  PassCmd "*FIXME* for the platform"
   Port 993
   SSLType IMAPS
   SSLVersions TLSv1.2
@@ -68,7 +68,7 @@
   Host ballard.amazon.com
   Port 1993
   User davdunc
-  PassCmd "security find-generic-password -s mu4e-exchange -a davdunc -w"
+  PassCmd "*FIXME*"
   SSLType IMAPS
   CertificateFile ~/Maildirs/root-certificates.pem
   PipelineDepth 1
