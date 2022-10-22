@@ -1,16 +1,3 @@
-* Ansible Mode Configuration
-#+begin_src emacs-lisp :tangle ~/.emacs.d/user_lisp/ansible-mode-config.el :mkdirp t
-  (use-package ansible
-    :preface
-    (defun maybe-enable-ansible+ ()
-      (let ((buffer-or-directory-name (or buffer-file-name default-directory)))
-	(when (and (locate-dominating-file buffer-or-directory-name "ansible.cfg")
-		   (not (string-match "inventory\\.ya?ml$" buffer-or-directory-name)))
-	  (ansible t))))
-    :hook (yaml-mode . maybe-enable-ansible+))
-
-#+end_src
-
 * LSP Mode Configuration
 ** Basic Configuration
 :LOGBOOK:
@@ -34,4 +21,27 @@ CLOCK: [2022-04-19 Tue 17:57]--[2022-04-19 Tue 18:57] =>  1:00
     :config
     (which-key-mode))
 
+#+end_src
+* Ansible Mode Configuration
+#+begin_src emacs-lisp :tangle ~/.emacs.d/user_lisp/ansible-mode-config.el :mkdirp t
+  (use-package ansible
+    :preface
+    (defun maybe-enable-ansible+ ()
+      (let ((buffer-or-directory-name (or buffer-file-name default-directory)))
+	(when (and (locate-dominating-file buffer-or-directory-name "ansible.cfg")
+		   (not (string-match "inventory\\.ya?ml$" buffer-or-directory-name)))
+	  (ansible t))))
+    :hook (yaml-mode . maybe-enable-ansible+))
+
+#+end_src
+
+* Magit Configuration
+#+begin_src emacs-lisp :tangle ~/.emacs.d/user_lisp/magit-mode-config.el :mkdirp t
+  (use-package magit
+    :init
+    (message "Loading Magit!")
+    :config
+    (message "Loaded Magit!")
+    :bind (("C-x g" . magit-status)
+           ("C-x C-g" . magit-status)))
 #+end_src
